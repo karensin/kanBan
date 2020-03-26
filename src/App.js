@@ -14,9 +14,10 @@ class Task {
 }
 
 function Column(props) {
-
+  // (blah) => doSomething()
+  // function noName(blah) {doSomething()}
   //each task should generate its own div tag n id to seperate 
-  const toDisplay = props.tasks.map(task => <div onClick='' key={task.id}> {task.content}</div>)
+  const toDisplay = props.tasks.map(task => <button onClick={e => props.onClickDelete(task.id)} key={task.id}> {task.content}</button>)
   // props.tasks is a list of strings
   // task is a string
   // 
@@ -27,30 +28,20 @@ function Column(props) {
     </div>
   )
 }
+//make 4 lists to store different stages 
+// 1. planned 2. in progress 3. testing 4. done  
+// create a task
+// delete a task 
+// move a task 
 
 function App() {
-  //make 4 lists to store different stages 
-  // 1. planned 2. in progress 3. testing 4. done  
-  // create a task
-  // delete a task 
-  // move a task 
-
-  //task string
-
-  //list of strings
   const [tasks, setTasks] = useState([])
-
-  //planned [] of tasks (objs)
-  //inProgress [] 
-  //testing []
-  //done []
-  const [planned, setPlanned] = useState([])
-  const [inProgress, setinProgress] = useState([])
-  const [testing, setTesting] = useState([])
-  const [done, getDone] = useState([])
+  const [planned, setPlanned] = useState([])   //planned [] of tasks (objs)
+  const [inProgress, setinProgress] = useState([])  //inProgress [] 
+  const [testing, setTesting] = useState([])  //testing []
+  const [done, getDone] = useState([])   //done []
 
   function keyPressed(e) {
-
     if (e.key === "Enter") {
       let tempTask = new Task(uuidv4(), e.target.value)
       setTasks([...tasks, tempTask])
@@ -59,15 +50,19 @@ function App() {
   }
   console.log(tasks)
 
+  let onClickDelete = function (taskId) {
+    console.log('delete', taskId, tasks.id)
+    let tempTasks = tasks.filter((task) => taskId !== task.id)
+    setTasks(tempTasks)
+  }
+
   return (
     <div className="App">
       Kanban
-      <div className="container">
-
-      </div>
-
+      <div className="container"></div>
       <input name="test" onKeyPress={keyPressed} />
-      <Column tasks={tasks} />
+      {/* passing a variable of type function */}
+      < Column tasks={tasks} onClickDelete={onClickDelete} />
     </div>
   );
 }
