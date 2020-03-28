@@ -32,7 +32,7 @@ function Column(props) {
     <div>
       {props.stageID}
       <div onClick={e => props.onClickMoveRight(task.id, props.stageID)} key={task.id}>  {task.content}  </div>
-      <button onClick={e => props.onClickDelete(task.id)} > </button>
+      <button onClick={e => props.onClickDelete(task.id, props.stageID)} > </button>
     </div>)
   // props.tasks is a list of strings
   // task is a string
@@ -75,12 +75,18 @@ function App() {
     }
   }
 
-  function onClickDelete(taskId) {
-    // let tempTasks = planned.filter((task) => {
-    //   return taskId !== task.id
-    // }) //return a list that is not our targeted task.id
+  function onClickDelete(taskId, stageID) {
 
-    // setPlanned(tempTasks)
+    //[] 
+    let tempStage = stages[stageID]
+    //return a list that is not our targeted task.id
+    let tempTasks = tempStage.filter((task) => {
+      return taskId !== task.id
+    })
+    let tempStages = { ...stages }
+    tempStages[stageID] = tempTasks
+    setStages(tempStages)
+
   }
 
   // move task
@@ -91,7 +97,6 @@ function App() {
     let taskClicked
     //  [] of tasks inside the stage 
     let prevStage = stages[stageID]
-
     //return prevStage with new task 
     prevStage.map((task) => {
       if (taskId === task.id) {
@@ -102,9 +107,7 @@ function App() {
     let filteredOldTaskList = prevStage.filter((task) => {
       return taskId !== task.id
     })
-
     //
-
     let tempStages = { ...stages }
     tempStages[stageID] = filteredOldTaskList
     // setinProgress([...inProgress, taskClicked])
@@ -114,7 +117,6 @@ function App() {
   }
 
   function onClickMoveLeft(taskId) {
-
   }
 
 
